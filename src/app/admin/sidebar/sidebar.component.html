@@ -7,9 +7,9 @@
   <nav class='sidebar-menu' #sidebarMenu>
     <ul class='item-list'>
       <li [class.expanded]='currentLink.indexOf(links.admin.organizationsList) > - 1' class='item hasItems' data-item='Organizations'>
-        <span class='flex item-label' [textContent]='strings.organizations[lng]'></span>
-        <ul class='trans-15s item-list sub'>
-          <li [class.selected]='links.admin.organizationsList === currentLink' class='item' data-item='org-list'>
+        <span class='trans-15s flex item-label' [textContent]='strings.organizations[lng]'></span>
+        <ul class='trans-25s item-list sub'>
+          <li mat-button [class.selected]='links.admin.organizationsList === currentLink' class='item' data-item='org-list' md-ink-ripple>
             <a class='flex' [routerLink]='[links.admin.organizationsList]' [textContent]='strings.list[lng]'></a>
           </li>
           <li [class.selected]='links.admin.organizationsNew === currentLink' class='item' data-item='org-new'>
@@ -18,8 +18,8 @@
         </ul>
       </li>
       <li [class.expanded]='currentLink.indexOf(links.admin.projectsList) > - 1' class='item hasItems' data-item='Projects'>
-        <span class='flex item-label' [textContent]='strings.projects[lng]'></span>
-        <ul class='trans-15s item-list sub'>
+        <span class='trans-15s flex item-label' [textContent]='strings.projects[lng]'></span>
+        <ul class='trans-25s item-list sub'>
           <li [class.selected]='links.admin.projectsList === currentLink' class='item' data-item='proj-list'>
             <a class='flex' [routerLink]='[links.admin.projectsList]' [textContent]='strings.list[lng]'></a>
           </li>
@@ -29,8 +29,8 @@
         </ul>
       </li>
       <li [class.expanded]='currentLink.indexOf(links.admin.reports.closedProjects) > - 1' class='item hasItems' data-item='Reports'>
-        <span class='flex item-label' [textContent]='strings.reports[lng]'></span>
-        <ul class='trans-15s item-list sub'>
+        <span class='trans-15s flex item-label' [textContent]='strings.reports[lng]'></span>
+        <ul class='trans-25s item-list sub'>
           <li [class.selected]='links.admin.reports.closedProjects === currentLink' class='item' data-item='closed-proj-list'>
             <a class='flex' [routerLink]='[links.admin.reports.closedProjects]' [textContent]='strings.projects[lng]'></a>
           </li>

@@ -47,6 +47,6 @@ export class OrganizationPageComponent implements OnInit {
   }
 
   constructor(public route: ActivatedRoute, public router: Router, private _dataService: DataService) {
-    _dataService.setObservables('_headerSource', 'oganization overview');
+    _dataService.setObservables('_headerSource', 'organization overview');
   }
 }

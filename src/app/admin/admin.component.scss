@@ -13,6 +13,14 @@ $sidebarClosedVal: '0';
         float: right;
         width: calc(100% - 260px);
     }
+
+    /* app-sidebar:hover {
+        z-index: 100;
+    }
+
+    .main-panel:hover {
+        z-index: 100;
+    } */
 }
 
 @media #{$phone-tablet} {
