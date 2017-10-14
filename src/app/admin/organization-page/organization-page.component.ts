@@ -8,27 +8,23 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './organization-page.component.html',
   styleUrls: ['./organization-page.component.scss']
 })
-export class OrganizationPageComponent implements OnInit {
 
-  _organizationId: number = 0;
-  _organization: any;
+export class OrganizationPageComponent implements OnInit {
+  private _organizationId = 0;
+  private _organization: any;
   errors: any[] = [];
 
-  get organizationId():number{
+  get organizationId(): number {
     return this._organizationId;
   }
 
-  set organizationId(value:number){
+  set organizationId(value: number) {
     this._organizationId = value;
-    if(value > 0){
-      this.dataService.getOrganizations().subscribe(
-        res => {
-          this.organization = res.filter((v, k) => v.id == value)[0];
-        },
-        error => {
-          console.log(error);
-          this.errors.push(error);
-        }
+
+    if (value > 0) {
+      this._dataService.getOrganizations().subscribe(
+        organizations => this.organization = organizations.filter((v, k) => v.id === value)[0],
+        error => this.errors.push(error)
       );
     }
   }
@@ -39,17 +35,18 @@ export class OrganizationPageComponent implements OnInit {
 
   set organization(value: Organization){
     this._organization = value;
-    this.dataService.getProjects().subscribe(
-      res => this._organization.projects = res.filter((v,k) => v.organizationId == value.id),
+
+    this._dataService.getProjects().subscribe(
+      projects => this._organization.projects = projects.filter((v, k) => v.organizationId === value.id),
       error => this.errors.push(error)
     );
   }
-
-
-  constructor(public route: ActivatedRoute, public router: Router,private dataService: DataService) { }
 
   ngOnInit() {
     this.organizationId = +this.route.snapshot.paramMap.get('id');
   }
 
+  constructor(public route: ActivatedRoute, public router: Router, private _dataService: DataService) {
+    _dataService.setObservables('_headerSource', 'oganization overview');
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { STRINGS } from './dashboard.constants';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,10 +8,9 @@ import { STRINGS } from './dashboard.constants';
 })
 
 export class DashboardComponent implements OnInit {
-  strings = STRINGS;
-  lng = 'US';
-
-  constructor() { }
+  constructor(private _fetcher: DataService) {
+    _fetcher.setObservables('_headerSource', 'dashboard');
+  }
 
   ngOnInit() {
   }

@@ -67,25 +67,6 @@ $sidebarClosedVal: '0';
         margin-left: #{$sidebarExpandedVal};
         pointer-events: none;
     }
-
-    /* app-sidebar.expanded {
-        width: #{$sidebarExpandedVal};
-    }
-
-    .main-panel.expanded {
-        margin-left: #{$sidebarExpandedVal};
-        pointer-events: none;
-    }
-
-    .main-panel.expanded::before {
-        content: "";
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,.5);
-        overflow: hidden;
-    } */
 }
 
 app-sidebar {
@@ -102,6 +83,23 @@ app-sidebar {
 
     box-sizing: border-box;
     z-index: 2;
+}
+
+.admin-header {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 6px 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid silver;
+    font-size: 30px;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: default;
+    overflow: hidden;
+    box-sizing: border-box;
+    user-select: none;
 }
 
 .main-panel {

@@ -1,6 +1,5 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataService } from '../services/data.service';
 import { DataSource } from '@angular/cdk/table';
 import { MatPaginator, MatSort } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -9,49 +8,39 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
+
+// Services
+import { DataService } from '../services/data.service';
+
+// Interfaces
 import { Organization } from '../interface/organization';
 
-/**
- *
- *
- * @export
- * @class OrganizationListComponent
- * @implements {OnInit}
- * @implements {OnDestroy}
- */
 @Component({
   selector: 'app-organization-list',
   templateUrl: './organization-list.component.html',
   styleUrls: ['./organization-list.component.scss']
 })
-/** */
-export class OrganizationListComponent implements OnInit, OnDestroy {
+
+export class OrganizationListComponent implements OnInit {
+  @ViewChild(MatSort) sort: MatSort;
+
   dataSource: OrganizationDataSource | null;
   displayedColumns = ['id', 'name', 'address', 'person', 'phone'];
 
-  @ViewChild(MatSort) sort: MatSort;
-
-  // Constructor here
-  constructor(private _dataService: DataService, private _router: Router ) {
+  handleRowClick(row) {
+    this._router.navigateByUrl('/admin/organizations/view/' + row.id);
   }
 
   ngOnInit() {
     this.dataSource = new OrganizationDataSource(this._dataService, this.sort);
-    console.log('this.datasource', this.dataSource);
   }
 
-  ngOnDestroy(): void { }
-
-  handleRowClick(row) {
-    // alert('your click on the row with the organization  name ' + row.name);
-    this._router.navigateByUrl('/admin/organizations/view/' + row.id);
+  constructor(private _dataService: DataService, private _router: Router ) {
+    _dataService.setObservables('_headerSource', 'organization list');
   }
-
-
 }
 
 export class OrganizationDataSource extends DataSource<any> {
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   errors: any[] = [];
   orgList: Organization[];
 
@@ -63,7 +52,6 @@ export class OrganizationDataSource extends DataSource<any> {
   subject: BehaviorSubject<Organization[]> = new BehaviorSubject<Organization[]>([]);
 
   connect(): Observable<Organization[]> {
-
     const displayDataChanges = [
       this.subject,
       this._sorter.sortChange
@@ -83,7 +71,6 @@ export class OrganizationDataSource extends DataSource<any> {
   disconnect() {
     this.subject.complete();
     this.subject.observers = [];
-    console.log('disconnected!');
   }
 
   getSortedData(): Organization[] {
@@ -98,9 +85,9 @@ export class OrganizationDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sorter.active) {
-        case 'id': [propertyA, propertyB] = [a.id, b.id]; break;
-        case 'orgId': [propertyA, propertyB] = [a.orgId, b.orgId]; break;
-        case 'name': [propertyA, propertyB] = [a.name, b.name]; break;
+        case 'id':      [propertyA, propertyB] = [a.id, b.id]; break;
+        case 'orgId':   [propertyA, propertyB] = [a.orgId, b.orgId]; break;
+        case 'name':    [propertyA, propertyB] = [a.name, b.name]; break;
         case 'address': [propertyA, propertyB] = [a.address, b.address]; break;
       }
 

@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {Donor} from '../donor.interface';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/Observable/throw';
+
 
 @Injectable()
 export class DonorOverviewService {
