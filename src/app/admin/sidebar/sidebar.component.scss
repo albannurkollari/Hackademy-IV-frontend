@@ -48,6 +48,7 @@ $shiftTop: 41px;
         background-color: whitesmoke;
         border-radius: 3px;
         opacity: 0;
+        overflow: hidden;
         z-index: -1;
     
         /* -webkit-box-shadow: 0 10px 30px -12px rgba(0,0,0,.42), 0 4px 25px 0 rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
@@ -114,6 +115,7 @@ $shiftTop: 41px;
         height: auto;
         opacity: 1;
         z-index: 1;
+        overflow: initial;
         border: 1px solid #61bfad;
         
         -webkit-transform: none;
@@ -373,7 +375,6 @@ $shiftTop: 41px;
 }
 
 .sidebar-menu a {
-    color: inherit;
     height: calc(#{$listItemLabelHeight} - 10px);
     text-decoration: none;
 }
@@ -419,7 +420,7 @@ $shiftTop: 41px;
 // USER ACTIONS
 
 .sidebar-menu a:visited {
-    color: initial;
+    
 }
 
 //HOVERS
@@ -438,4 +439,9 @@ $shiftTop: 41px;
     -ms-transition: .25s all ease-in-out;
     -o-transition: .25s all ease-in-out;
     transition: .25s all ease-in-out;
+}
+
+.sidebar-menu * {
+    color: rgb(78, 78, 78);
+    font-family: 'Verdana';
 }
