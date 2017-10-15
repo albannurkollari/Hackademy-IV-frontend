@@ -14,6 +14,7 @@ import { DataService } from '../services/data.service';
 
 // Interfaces
 import { Project } from '../interface/project';
+import { LocalizationService } from '../services/localization.service';
 
 @Component({
   selector: 'app-project-list',
@@ -23,7 +24,8 @@ import { Project } from '../interface/project';
 
 export class ProjectListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-
+  strings: Object = {};
+  pageHeader = 'projectList';
   color = 'primary';
   mode = 'determinate';
   proList: any[];
@@ -38,13 +40,12 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
     this.dataSource = new ProjectDataSource(this._dataService, this.sort);
     console.log('this.datasource', this.dataSource);
   }
 
-  constructor(private _dataService: DataService, private _router: Router ) {
-    _dataService.setObservables('_headerSource', 'project list');
-  }
+  constructor(private _localization: LocalizationService, private _dataService: DataService, private _router: Router ) { }
 }
 
 export class ProjectDataSource extends DataSource<any> {

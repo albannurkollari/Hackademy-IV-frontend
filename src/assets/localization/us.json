@@ -1,0 +1,12 @@
+{
+    "dashboard": "dashboard",
+    "menu": "menu",
+    "organizations": "organizations",
+    "projects": "projects",
+    "list": "list",
+    "add": "add",
+    "reports": "reports",
+    "closedProjects": "reports: closed projects",
+    "projectList": "project list",
+    "projectOverview": "project overview"
+}

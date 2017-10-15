@@ -1,8 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { Router } from '@angular/router';
-
-// Constants
-import { STRINGS, LINKS } from './sidebar.constants';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,15 +8,15 @@ import { STRINGS, LINKS } from './sidebar.constants';
 })
 
 export class SidebarComponent implements OnInit {
-  strings           = STRINGS;                            // Constant from another file.
-  links             = LINKS;                              // Constant from another file.
+  @Input() strings;
+  @Input() links;
+  @ViewChild('sidebarMenu') sidebarMenu: ElementRef;
   lng               = 'US';                               // Defines which language strings to load.
   mq                = matchMedia('(max-width: 1366px)');  // Defines a window.matchMedia object.
   listItemEventName = 'mouseup';                          // Defines which JavaScript event to handle.
   functions         = new Functions();                    // New instance of Functions class
   mediaChanged      = this.functions.mediaChanged;        // A function from Functions class.
   toggleSidebar     = this.functions.toggleSidebar;       // A function from Functions class.
-  @ViewChild('sidebarMenu') sidebarMenu: ElementRef;
   currentLink       = '';
   checkLink         = this.functions.checkLink;
 

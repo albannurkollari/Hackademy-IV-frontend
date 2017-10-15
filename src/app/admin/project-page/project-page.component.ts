@@ -6,6 +6,7 @@ import { DataService } from '../services/data.service';
 
 // Interfaces
 import { Project } from '../interface/project';
+import { LocalizationService } from '../services/localization.service';
 
 @Component({
   selector: 'app-project-page',
@@ -16,6 +17,8 @@ import { Project } from '../interface/project';
 export class ProjectPageComponent implements OnInit {
   private _projectId: number;
   private _project: any;
+  strings: Object = {};
+  pageHeader = 'projectOverview';
   errors: any[] = [];
 
   get project(){
@@ -58,10 +61,14 @@ export class ProjectPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
     this.projectId = +this.route.snapshot.paramMap.get('id');
   }
 
-  constructor(public route: ActivatedRoute, public router: Router, private _dataService: DataService) {
-    _dataService.setObservables('_headerSource', 'project overview');
-  }
+  constructor(
+    public route: ActivatedRoute,
+    public router: Router,
+    private _localization: LocalizationService,
+    private _dataService: DataService
+  ) { }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../services/data.service';
+
+// Services
+import { LocalizationService } from '../services/localization.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,11 +10,13 @@ import { DataService } from '../services/data.service';
 })
 
 export class DashboardComponent implements OnInit {
-  constructor(private _fetcher: DataService) {
-    _fetcher.setObservables('_headerSource', 'dashboard');
-  }
+  strings: Object = {};
+  errors: any[] = [];
+  pageHeader = 'dashboard';
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
   }
 
+  constructor(private _localization: LocalizationService) { }
 }

@@ -1,7 +1,6 @@
 <div class='wrapper'>
-    <app-sidebar class='trans-15s'></app-sidebar>
+    <app-sidebar class='trans-15s' [strings]='strings' [links]='links'></app-sidebar>
     <div class='trans-15s main-panel'>
-        <!-- <app-admin-toolbar></app-admin-toolbar> -->
         <div class='trans-15s admin-header' [textContent]='header'></div>
         <router-outlet></router-outlet>
     </div>

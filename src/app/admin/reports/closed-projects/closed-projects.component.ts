@@ -10,10 +10,11 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 
 // Services
-import { DataService } from '../../services/data.service';
+import { LocalizationService } from '../../services/localization.service';
 
 // Interfaces
 import { NewProject } from '../../interface/project';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-closed-projects',
@@ -23,7 +24,8 @@ import { NewProject } from '../../interface/project';
 
 export class ClosedProjectsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-
+  strings: Object = {};
+  pageHeader = 'closedProjects';
   color = 'primary';
   mode = 'determinate';
   errors: any[] = [];
@@ -31,12 +33,11 @@ export class ClosedProjectsComponent implements OnInit {
   displayedColumns = ['projectName', 'orgName', 'bankAccount', 'fundsRaised', 'dueDate', 'closedDate'];
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
     this.dataSource = new ProjectDataSource(this._dataService, this.sort);
   }
 
-  constructor(private _dataService: DataService, private _router: Router) {
-    _dataService.setObservables('_headerSource', 'reports: closed projects');
-  }
+  constructor(private _localization: LocalizationService, private _dataService: DataService, private _router: Router) { }
 }
 
 export class ProjectDataSource extends DataSource<any> {
@@ -50,13 +51,13 @@ export class ProjectDataSource extends DataSource<any> {
     ];
 
     if (!this.subject.isStopped) {
-      this.dataService.getNewProjects().subscribe(
+      this._dataService.getNewProjects().subscribe(
         projects => {
           projects = projects.filter((v, k) => {
             return v.status === 'false';
           });
 
-          this.dataService.getNewOrganizations().subscribe(
+          this._dataService.getNewOrganizations().subscribe(
             orgs => {
               for (const proj of projects) {
                 proj['organization'] = orgs.filter((v, k) => {
@@ -112,7 +113,7 @@ export class ProjectDataSource extends DataSource<any> {
     });
   }
 
-  constructor(private dataService: DataService, private _sorter: MatSort) {
+  constructor(private _dataService: DataService, private _sorter: MatSort) {
     super();
   }
 }
