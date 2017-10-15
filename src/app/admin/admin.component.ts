@@ -17,12 +17,16 @@ import * as CONSTANTS from './admin.links';
 export class AdminComponent implements OnInit {
   links = CONSTANTS.LINKS;
   strings: Object = {};
-  localLng = 'sq';
+  localLng = localStorage.localization !== undefined ? localStorage.localization : 'us';
+  languages: Object[] = [
+    {'label': 'albanian', 'value': 'sq'},
+    {'label': 'english', 'value': 'us'},
+    {'label': 'swedish', 'value': 'sv'}
+  ];
   header: string;
   errors: any[] = [];
 
-  ngOnInit() {
-    // We load all strings of selected language in this block of code.
+  initLocalization: Function = (): void => {
     this._localization.loadLng(this.localLng).subscribe(
       strings => {
         if (strings !== undefined && typeof strings === 'object' && Object.keys(strings).length > 0) {
@@ -46,6 +50,21 @@ export class AdminComponent implements OnInit {
       },
       error => this.errors.push(error)
     );
+  }
+
+  saveLocalization: Function = (value: string, childComp?: any): void => {
+    if (value === undefined || typeof value !== 'string' || value.trim().length <= 0) {
+      return;
+    }
+
+    localStorage.setItem('localization', value);
+    console.log(localStorage.getItem('localization'));
+    setTimeout(() => this.initLocalization(), 300);
+  }
+
+  ngOnInit() {
+    // We load all strings of selected language in this block of code.
+    this.initLocalization();
   }
 
   constructor(private _router: Router, private _localization: LocalizationService) { }

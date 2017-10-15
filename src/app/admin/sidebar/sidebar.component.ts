@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,8 +10,12 @@ import { Router } from '@angular/router';
 export class SidebarComponent implements OnInit {
   @Input() strings;
   @Input() links;
+  @Input() saveLocalization;
+  @Input() languages;
+  @Input() localLng;
+  @Input() initLocalization;
   @ViewChild('sidebarMenu') sidebarMenu: ElementRef;
-  lng               = 'US';                               // Defines which language strings to load.
+
   mq                = matchMedia('(max-width: 1366px)');  // Defines a window.matchMedia object.
   listItemEventName = 'mouseup';                          // Defines which JavaScript event to handle.
   functions         = new Functions();                    // New instance of Functions class
@@ -20,8 +24,8 @@ export class SidebarComponent implements OnInit {
   currentLink       = '';
   checkLink         = this.functions.checkLink;
 
-  constructor(private router: Router) {
-    this.currentLink = router.routerState.snapshot.url;
+  emitChangedLng: Function = (): void => {
+    this.initLocalization();
   }
 
   ngOnInit() {
@@ -34,6 +38,9 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  constructor(private router: Router) {
+    this.currentLink = router.routerState.snapshot.url;
+  }
 }
 
 // Exported all custom-tailored functions into a class named "Functions"

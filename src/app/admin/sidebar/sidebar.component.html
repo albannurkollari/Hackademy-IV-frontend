@@ -38,5 +38,10 @@
       </li>
     </ul>
   </nav>
+  <mat-form-field class='sidebar-language'>
+    <mat-select *ngIf='strings' placeholder='' [(ngModel)]="localLng" (change)='emitChangedLng()'>
+      <mat-option *ngFor="let lng of languages" [value]="lng.value" [textContent]='lng.label'></mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 <span class='trans-15s flex sidebar-toggle' (mouseup)='toggleSidebar($event.currentTarget)'><i></i></span>

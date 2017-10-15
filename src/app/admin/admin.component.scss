@@ -14,7 +14,7 @@ $sidebarClosedVal: '0';
         width: calc(100% - 260px);
     }
 
-    :host /deep/ router-outlet + * > .container {
+    :host ::ng-deep router-outlet + * > .container {
         position: relative;
         display: block;
         background: #eee;
@@ -22,8 +22,8 @@ $sidebarClosedVal: '0';
         overflow: hidden;
       }
       
-    :host /deep/ router-outlet + * > .container::before,
-    :host /deep/ router-outlet + * > .container::after {
+    :host ::ng-deep router-outlet + * > .container::before,
+    :host ::ng-deep router-outlet + * > .container::after {
         content: "";
         position: absolute;
         display: block;
@@ -39,7 +39,7 @@ $sidebarClosedVal: '0';
         transition: .15s all ease-in-out;
     }
     
-    :host /deep/ router-outlet + * > .container::before {
+    :host ::ng-deep router-outlet + * > .container::before {
         top: 0;
     
         -webkit-transform: skewY(-1deg);
@@ -49,7 +49,7 @@ $sidebarClosedVal: '0';
         transform: skewY(-1deg);
     }
     
-    :host /deep/ router-outlet + * > .container::after {
+    :host ::ng-deep router-outlet + * > .container::after {
         bottom: -2px;
     
         -webkit-transform: skewY(1deg);
@@ -59,21 +59,21 @@ $sidebarClosedVal: '0';
         transform: skewY(1deg);
     }
     
-    :host /deep/ router-outlet + * > .container:nth-child(odd)::before,
-    :host /deep/ router-outlet + * > .container:nth-child(odd)::after, {
+    :host ::ng-deep router-outlet + * > .container:nth-child(odd)::before,
+    :host ::ng-deep router-outlet + * > .container:nth-child(odd)::after, {
         transform-origin: left;
     }
     
-    :host /deep/ router-outlet + * > .container:nth-child(even)::before,
-    :host /deep/ router-outlet + * > .container:nth-child(even)::after, {
+    :host ::ng-deep router-outlet + * > .container:nth-child(even)::before,
+    :host ::ng-deep router-outlet + * > .container:nth-child(even)::after, {
         transform-origin: right;
     }
     
-    :host /deep/ router-outlet + * > .container:nth-child(even)::before {
+    :host ::ng-deep router-outlet + * > .container:nth-child(even)::before {
         transform: skewY(1deg);
     }
     
-    :host /deep/ router-outlet + * > .container:nth-child(even)::after {
+    :host ::ng-deep router-outlet + * > .container:nth-child(even)::after {
         transform: skewY(-1deg);
     }
 }

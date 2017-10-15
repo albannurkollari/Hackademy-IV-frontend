@@ -12,5 +12,6 @@
     "projectNew": "new project",
     "projectList": "project list",  
     "projectOverview": "project overview",
-    "closedProjects": "reports: closed projects"
+    "closedProjects": "reports: closed projects",
+    "language": "language"
 }
