@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { Organization } from '../interface/organization';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LocalizationService } from '../services/localization.service';
 
 @Component({
   selector: 'app-organization-page',
@@ -12,6 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class OrganizationPageComponent implements OnInit {
   private _organizationId = 0;
   private _organization: any;
+  strings: Object = {};
+  pageHeader = 'organizationOverview';
   errors: any[] = [];
 
   get organizationId(): number {
@@ -43,10 +46,14 @@ export class OrganizationPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
     this.organizationId = +this.route.snapshot.paramMap.get('id');
   }
 
-  constructor(public route: ActivatedRoute, public router: Router, private _dataService: DataService) {
-    _dataService.setObservables('_headerSource', 'organization overview');
-  }
+  constructor(
+    public route: ActivatedRoute,
+    public router: Router,
+    private _dataService: DataService,
+    private _localization: LocalizationService
+  ) { }
 }

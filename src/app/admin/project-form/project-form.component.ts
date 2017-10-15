@@ -5,6 +5,7 @@ import { Component, OnInit, ElementRef, ViewChild, DoCheck, QueryList } from '@a
 import { INPUT_ATTRIBUTES, NUMBERS, REGEX_UNITS } from './project-form.constants';
 
 // Services
+import { LocalizationService } from '../services/localization.service';
 import { DataService } from '../services/data.service';
 
 // Interfaces
@@ -19,6 +20,9 @@ import { Project } from '../interface/project';
 
 export class ProjectFormComponent implements OnInit {
   @ViewChild('projectForm') projectForm: ElementRef;
+
+  strings: Object = {};
+  pageHeader = 'projectNew';
   errorsTwo: QueryList<String>;
   newProject: Project = {
     id: 0,
@@ -204,6 +208,8 @@ export class ProjectFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
+
     if (this.organizations !== undefined) {
       this._dataService.getOrganizations().subscribe(
         res => {
@@ -257,9 +263,7 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  constructor(private _dataService: DataService, private fb: FormBuilder) {
-    _dataService.setObservables('_headerSource', 'new project');
-
+  constructor(private _localization: LocalizationService, private _dataService: DataService, private fb: FormBuilder) {
     this.projectControls.toDate.setValidators([
       Validators.required,
       (c: AbstractControl) => c.value < new Date() ?  {'wrongdate': 'Wrong Date'} : null,

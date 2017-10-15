@@ -10,6 +10,7 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 
 // Services
+import { LocalizationService } from '../services/localization.service';
 import { DataService } from '../services/data.service';
 
 // Interfaces
@@ -24,6 +25,8 @@ import { Organization } from '../interface/organization';
 export class OrganizationListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
+  strings: Object = {};
+  pageHeader = 'organizationList';
   dataSource: OrganizationDataSource | null;
   displayedColumns = ['id', 'name', 'address', 'person', 'phone'];
 
@@ -32,12 +35,11 @@ export class OrganizationListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
     this.dataSource = new OrganizationDataSource(this._dataService, this.sort);
   }
 
-  constructor(private _dataService: DataService, private _router: Router ) {
-    _dataService.setObservables('_headerSource', 'organization list');
-  }
+  constructor(private _localization: LocalizationService, private _dataService: DataService, private _router: Router ) { }
 }
 
 export class OrganizationDataSource extends DataSource<any> {

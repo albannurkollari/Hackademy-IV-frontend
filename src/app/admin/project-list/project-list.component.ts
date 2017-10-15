@@ -24,13 +24,11 @@ import { LocalizationService } from '../services/localization.service';
 
 export class ProjectListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
+
   strings: Object = {};
   pageHeader = 'projectList';
   color = 'primary';
   mode = 'determinate';
-  proList: any[];
-  projectId = 0;
-  project: any;
   errors: any[] = [];
   dataSource: ProjectDataSource | null;
   displayedColumns = ['picture', 'projectName', 'fromDate', 'toDate', 'goal', 'funded'];
@@ -42,7 +40,6 @@ export class ProjectListComponent implements OnInit {
   ngOnInit() {
     this._localization.setHeaders(this.strings, this.pageHeader);
     this.dataSource = new ProjectDataSource(this._dataService, this.sort);
-    console.log('this.datasource', this.dataSource);
   }
 
   constructor(private _localization: LocalizationService, private _dataService: DataService, private _router: Router ) { }
@@ -69,7 +66,6 @@ export class ProjectDataSource extends DataSource<any> {
     if (!this.subject.isStopped) {
       this._serviceFetch.getProjects()
         .subscribe(res => {
-          console.log('Value', this.subject);
           this.subject.next(res);
         });
       return Observable.merge(...displayDataChanges).map(() => {
@@ -81,7 +77,6 @@ export class ProjectDataSource extends DataSource<any> {
   disconnect() {
     this.subject.complete();
     this.subject.observers = [];
-    console.log('disconnected!');
   }
 
   getSortedData(): Project[] {

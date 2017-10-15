@@ -13,8 +13,9 @@ export class LocalizationService {
   private _paths = {
     root: '../../../assets/localization/',
     all: 'languages_all.json',
-    us: 'us.json',
-    sv: 'sv.json'
+    sq: 'sq.json',
+    sv: 'sv.json',
+    us: 'us.json'
   };
 
   functions: LocalizationFunctions = new LocalizationFunctions(this.client, this._paths);

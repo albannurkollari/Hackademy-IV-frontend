@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { REGEXES as regexes } from './organization-form.constants';
 import { DataService } from '../services/data.service';
+import { LocalizationService } from '../services/localization.service';
 
 @Component({
   selector: 'app-organization-form',
@@ -10,6 +11,8 @@ import { DataService } from '../services/data.service';
 })
 
 export class OrganizationFormComponent implements OnInit {
+  strings: Object = {};
+  pageHeader = 'organizationNew';
   formControls = {
     orgNumber:    new FormControl('', [Validators.required, Validators.pattern(regexes.organizationName)]),
     name:         new FormControl('', [Validators.required]),
@@ -24,9 +27,8 @@ export class OrganizationFormComponent implements OnInit {
   };
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
   }
 
-  constructor(private _dataService: DataService) {
-    _dataService.setObservables('_headerSource', 'new organization');
-  }
+  constructor(private _localization: LocalizationService, private _dataService: DataService) { }
 }

@@ -14,13 +14,68 @@ $sidebarClosedVal: '0';
         width: calc(100% - 260px);
     }
 
-    /* app-sidebar:hover {
-        z-index: 100;
+    :host /deep/ router-outlet + * > .container {
+        position: relative;
+        display: block;
+        background: #eee;
+        padding: 15vh 0;
+        overflow: hidden;
+      }
+      
+    :host /deep/ router-outlet + * > .container::before,
+    :host /deep/ router-outlet + * > .container::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 6%;
+        left: 0;
+        background-color: white;
+    
+        -webkit-transition: .15s all ease-in-out;
+        -moz-transition: .15s all ease-in-out;
+        -ms-transition: .15s all ease-in-out;
+        -o-transition: .15s all ease-in-out;
+        transition: .15s all ease-in-out;
     }
-
-    .main-panel:hover {
-        z-index: 100;
-    } */
+    
+    :host /deep/ router-outlet + * > .container::before {
+        top: 0;
+    
+        -webkit-transform: skewY(-1deg);
+        -moz-transform: skewY(-1deg);
+        -ms-transform: skewY(-1deg);
+        -o-transform: skewY(-1deg);
+        transform: skewY(-1deg);
+    }
+    
+    :host /deep/ router-outlet + * > .container::after {
+        bottom: -2px;
+    
+        -webkit-transform: skewY(1deg);
+        -moz-transform: skewY(1deg);
+        -ms-transform: skewY(1deg);
+        -o-transform: skewY(1deg);
+        transform: skewY(1deg);
+    }
+    
+    :host /deep/ router-outlet + * > .container:nth-child(odd)::before,
+    :host /deep/ router-outlet + * > .container:nth-child(odd)::after, {
+        transform-origin: left;
+    }
+    
+    :host /deep/ router-outlet + * > .container:nth-child(even)::before,
+    :host /deep/ router-outlet + * > .container:nth-child(even)::after, {
+        transform-origin: right;
+    }
+    
+    :host /deep/ router-outlet + * > .container:nth-child(even)::before {
+        transform: skewY(1deg);
+    }
+    
+    :host /deep/ router-outlet + * > .container:nth-child(even)::after {
+        transform: skewY(-1deg);
+    }
 }
 
 @media #{$phone-tablet} {
@@ -115,6 +170,13 @@ app-sidebar {
     display: block;
     padding: 20px;
     box-sizing: border-box;
+}
+
+.admin-footer {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
 }
 
 .trans-15s {

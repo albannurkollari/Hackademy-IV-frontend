@@ -1,12 +1,16 @@
 {
-    "dashboard": "dashboard",
     "menu": "menu",
     "organizations": "organizations",
     "projects": "projects",
     "list": "list",
     "add": "add",
     "reports": "reports",
-    "closedProjects": "reports: closed projects",
-    "projectList": "project list",
-    "projectOverview": "project overview"
+    "dashboard": "dashboard",
+    "organizationNew": "new organization",
+    "organizationList": "organization list",
+    "organizationOverview": "organization overview",
+    "projectNew": "new project",
+    "projectList": "project list",  
+    "projectOverview": "project overview",
+    "closedProjects": "reports: closed projects"
 }

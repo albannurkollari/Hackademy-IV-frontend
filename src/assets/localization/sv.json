@@ -1,9 +1,16 @@
 {
-    "dashboard": "dashboard",
     "menu": "meny",
     "organizations": "organisationer",
     "projects": "projekt",
     "list": "lista",
     "add": "lägg till",
-    "reports": "raporter"
+    "reports": "rapporter",
+    "dashboard": "instrumentbräda",
+    "organizationNew": "ny organisation",
+    "organizationList": "organisationslista",
+    "organizationOverview": "organisationsöversikt",
+    "projectNew": "nytt projekt",
+    "projectList": "projektlista",  
+    "projectOverview": "projektsöversikt",
+    "closedProjects": "rapporter: slutna projekt"
 }

@@ -17,7 +17,7 @@ import * as CONSTANTS from './admin.links';
 export class AdminComponent implements OnInit {
   links = CONSTANTS.LINKS;
   strings: Object = {};
-  localLng = 'us';
+  localLng = 'sq';
   header: string;
   errors: any[] = [];
 
