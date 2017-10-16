@@ -445,3 +445,25 @@ $shiftTop: 41px;
     color: rgb(78, 78, 78);
     font-family: 'Verdana';
 }
+
+.sidebar-language-wrapper {
+    position: absolute;
+    display: block;
+    width: 90%;
+    bottom: 30px;
+    left: 5%;
+    background-color: transparent;
+    border-radius: 3px;
+    padding: 0 10px;
+    overflow: hidden;
+
+    -webkit-box-shadow: 0 10px 30px -12px rgba(0,0,0,.42), 0 4px 25px 0 rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 10px 30px -12px rgba(0,0,0,.42), 0 4px 25px 0 rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
+    box-shadow: 0 10px 30px -12px rgba(0,0,0,.42), 0 4px 25px 0 rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
+}
+
+.sidebar-language {
+    position: relative;
+    display: block;
+    width: 100%;
+}

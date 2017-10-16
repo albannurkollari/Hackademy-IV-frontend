@@ -5,7 +5,7 @@
         <router-outlet></router-outlet>
         <div class='trans-15s admin-footer'>
             <mat-form-field>
-                <mat-select *ngIf='strings' placeholder='' [(ngModel)]="localLng" (change)='saveLocalization($event.value.trim())'>
+                <mat-select *ngIf='strings' [placeholder]='strings.language?.toUpperCase()' [(ngModel)]="localLng" (change)='saveLocalization($event.value.trim())'>
                   <mat-option *ngFor="let lng of languages" [value]="lng.value" [textContent]='lng.label'></mat-option>
                 </mat-select>
               </mat-form-field>
