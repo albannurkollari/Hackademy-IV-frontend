@@ -10,9 +10,9 @@ import { Router } from '@angular/router';
 export class SidebarComponent implements OnInit {
   @Input() strings;
   @Input() links;
-  @Input() saveLocalization;
   @Input() languages;
   @Input() localLng;
+  @Output() localLngChange: EventEmitter<string> = new EventEmitter();
   @Input() initLocalization;
   @ViewChild('sidebarMenu') sidebarMenu: ElementRef;
 
@@ -21,10 +21,15 @@ export class SidebarComponent implements OnInit {
   functions         = new Functions();                    // New instance of Functions class
   mediaChanged      = this.functions.mediaChanged;        // A function from Functions class.
   toggleSidebar     = this.functions.toggleSidebar;       // A function from Functions class.
-  currentLink       = '';
   checkLink         = this.functions.checkLink;
+  currentLink       = '';
 
-  emitChangedLng: Function = (): void => {
+  emitChanges: Function = (value: string): void => {
+    if (value === undefined || typeof value !== 'string' || value.trim().length <= 0) {
+      return;
+    }
+
+    this.localLngChange.emit(value);
     this.initLocalization();
   }
 

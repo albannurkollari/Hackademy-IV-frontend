@@ -39,7 +39,7 @@
     </ul>
   </nav>
   <mat-form-field class='sidebar-language'>
-    <mat-select *ngIf='strings' placeholder='' [(ngModel)]="localLng" (change)='emitChangedLng()'>
+    <mat-select *ngIf='strings' placeholder='' [(ngModel)]="localLng" (change)='emitChanges($event.value.trim())'>
       <mat-option *ngFor="let lng of languages" [value]="lng.value" [textContent]='lng.label'></mat-option>
     </mat-select>
   </mat-form-field>
