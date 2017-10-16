@@ -17,21 +17,31 @@ import * as CONSTANTS from './admin.links';
 export class AdminComponent implements OnInit {
   links = CONSTANTS.LINKS;
   strings: Object = {};
-  localLng = localStorage.localization !== undefined ? localStorage.localization : 'us';
-  languages: Object[] = [
-    {'label': 'albanian', 'value': 'sq'},
-    {'label': 'english', 'value': 'us'},
-    {'label': 'swedish', 'value': 'sv'}
-  ];
+  localLng = localStorage.localization !== undefined ? localStorage.localization : 'en-US';
+  languages: Object[] = [];
   header: string;
   errors: any[] = [];
 
   initLocalization: Function = (): void => {
+    // localStorage.removeItem('localization');
     this._localization.loadLng(this.localLng).subscribe(
       strings => {
         if (strings !== undefined && typeof strings === 'object' && Object.keys(strings).length > 0) {
           this.strings = strings;
           this._localization.storeLng(strings);
+
+          if (this.strings.hasOwnProperty('languages')) {
+            const _lngs = this.strings['languages'];
+            let _languages: Object[] = [];
+
+            for (const _lng in _lngs) {
+              if (_lngs.hasOwnProperty(_lng)) {
+                _languages.push({'label': _lng, 'value': _lngs[_lng]});
+              }
+            }
+
+            this.languages = _languages;
+          }
 
           // We load header title specific to the router-outlet inside admin page by subscribing to an observable shared on a service.
           this._localization.header.subscribe(

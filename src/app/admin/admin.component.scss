@@ -179,6 +179,10 @@ app-sidebar {
     overflow: hidden;
 }
 
+:host ::ng-deep .language-label {
+    text-transform: capitalize;
+}
+
 .trans-15s {
     -webkit-transition: .15s all ease-in-out;
     -moz-transition: .15s all ease-in-out;

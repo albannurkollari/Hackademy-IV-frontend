@@ -11,11 +11,11 @@ import { DataService } from './data.service';
 export class LocalizationService {
   private _stringsSource: Subject<Object> = new BehaviorSubject<Object>({});
   private _paths = {
-    root: '../../../assets/localization/',
-    all: 'languages_all.json',
-    sq: 'sq.json',
-    sv: 'sv.json',
-    us: 'us.json'
+    'root': '../../../assets/localization/',
+    'all': 'languages_all.json',
+    'sq-AL': 'sq-AL.json',
+    'se-SE': 'se-SE.json',
+    'en-US': 'en-US.json'
   };
 
   functions: LocalizationFunctions = new LocalizationFunctions(this.client, this._paths);

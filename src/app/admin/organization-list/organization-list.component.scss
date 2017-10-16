@@ -14,8 +14,6 @@ mat-card {
   height: auto;
 }
 
-
-
 .organization-container {
   display: flex;
   flex-direction: column;
@@ -37,7 +35,7 @@ mat-card {
   display: flex;
   border-bottom: 1px solid #ccc;
   align-items: center;
-  height: 32px;
+  min-height: 60px;
   padding: 0 8px;
 }
 
@@ -46,14 +44,30 @@ mat-card {
 }
 
 .organization-header-cell {
-  font-size: 14px;
+  margin: 0 10px;
+  font-size: 18px;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.904);
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.organization-header-cell:not(:last-of-type)::after {
+  /* content: ""; */
+  position: absolute;
+  display: block;
+  width: 1px;
+  height: calc(60px*0.8);
+  top: 10%;
+  right: 0;
+  background-color: white;
+  overflow: hidden;
 }
 
 .organization-cell {
-  font-size: 13px;
+  /* font-size: 14px; */
   color: rgba(0, 0, 0, 0.87);
+  text-align: center;
 }
 
 mat-row:hover {
@@ -63,23 +77,23 @@ mat-row:hover {
 .mat-cell:nth-child(1),
 .mat-header-cell:nth-child(1),
 {
-  flex: 0 0 5%;
+  // flex: 0 0 5%;
 }
 
 .mat-cell:nth-child(2),
 .mat-header-cell:nth-child(2),
 {
-  flex: 0 0 20%;
+  /* flex: 0 0 20%; */
 }
 
 .mat-cell:nth-child(3),
 .mat-header-cell:nth-child(3),
 {
-  flex: 0 0 40%;
+  /* flex: 0 0 40%; */
 }
 
 .mat-cell:nth-child(4),
 .mat-header-cell:nth-child(4),
 {
-  flex: 0 0 15%;
+  /* flex: 0 0 15%; */
 }
