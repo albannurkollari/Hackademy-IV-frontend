@@ -3,7 +3,7 @@ export const INPUT_ATTRIBUTES = {
     class: 'input-image',
     type: 'file',
     accept: 'image/*',
-    src: '../../../assets/default-placeholder.png',
+    src: './assets/default-placeholder.png',
     placeholder: 'Select an image from your device',
     title: 'Click to select an image',
     'prop-name': 'mainImage'

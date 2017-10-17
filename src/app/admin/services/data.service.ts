@@ -15,7 +15,7 @@ export class DataService {
   private _headerSource: Subject<string> = new BehaviorSubject<string>('');
 
   private _paths = {
-    root: '../../../assets/mockdata/',
+    root: './assets/mockdata/',
     organizations: 'organizations.json',
     newOrganizations: 'newOrganizations.json',
     projects: 'projects.json',
