@@ -3,13 +3,18 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from '@angular/cdk/table';
 import { MatSort } from '@angular/material';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService } from '../../services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NewProject } from '../../interface/project';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
+
+// Services
+import { LocalizationService } from '../../services/localization.service';
+
+// Interfaces
+import { NewProject } from '../../interface/project';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-closed-projects',
@@ -18,52 +23,41 @@ import 'rxjs/add/operator/map';
 })
 
 export class ClosedProjectsComponent implements OnInit {
+  @ViewChild(MatSort) sort: MatSort;
+  strings: Object = {};
+  pageHeader = 'closedProjects';
   color = 'primary';
   mode = 'determinate';
-  
   errors: any[] = [];
   dataSource: ProjectDataSource | null;
   displayedColumns = ['projectName', 'orgName', 'bankAccount', 'fundsRaised', 'dueDate', 'closedDate'];
 
-  @ViewChild(MatSort) sort: MatSort;
-
-  // Constructor here
-  constructor(private _dataService: DataService, private _router: Router) {
-  }
-
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
     this.dataSource = new ProjectDataSource(this._dataService, this.sort);
   }
 
-  ngOnDestroy(): void { }
+  constructor(private _localization: LocalizationService, private _dataService: DataService, private _router: Router) { }
 }
 
 export class ProjectDataSource extends DataSource<any> {
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   errors: any[] = [];
-
-  constructor(private dataService: DataService, private _sorter: MatSort) {
-    super();
-  }
-
-
   subject: BehaviorSubject<NewProject[]> = new BehaviorSubject<NewProject[]>([]);
 
   connect(): Observable<NewProject[]> {
-
     const displayDataChanges = [
       this.subject,
       this._sorter.sortChange
     ];
 
     if (!this.subject.isStopped) {
-      this.dataService.getNewProjects().subscribe(
+      this._dataService.getNewProjects().subscribe(
         projects => {
           projects = projects.filter((v, k) => {
             return v.status === 'false';
           });
 
-          this.dataService.getNewOrganizations().subscribe(
+          this._dataService.getNewOrganizations().subscribe(
             orgs => {
               for (const proj of projects) {
                 proj['organization'] = orgs.filter((v, k) => {
@@ -77,7 +71,7 @@ export class ProjectDataSource extends DataSource<any> {
               this.subject.next(projects);
             },
             error => this.errors.push(error)
-          )
+          );
         },
         error => this.errors.push(error)
       );
@@ -90,7 +84,6 @@ export class ProjectDataSource extends DataSource<any> {
   disconnect() {
     this.subject.complete();
     this.subject.observers = [];
-    console.log('disconnected!');
   }
 
   getSortedData(): NewProject[] {
@@ -104,14 +97,13 @@ export class ProjectDataSource extends DataSource<any> {
       let propertyA: number | string = '';
       let propertyB: number | string = '';
 
-      ['projectName', 'orgName', 'bankAccount', 'fundsRaised', 'dueDate', 'closedDate']
       switch (this._sorter.active) {
-        case 'title': [propertyA, propertyB] = [a.title, b.title]; break;
-        case 'orgName': [propertyA, propertyB] = [a['organization'].name, b['organization'].name]; break;
+        case 'title':       [propertyA, propertyB] = [a.title, b.title]; break;
+        case 'orgName':     [propertyA, propertyB] = [a['organization'].name, b['organization'].name]; break;
         case 'bankAccount': [propertyA, propertyB] = [a['organization'].bankAccount, b['organization'].bankAccount]; break;
         case 'fundsRaised': [propertyA, propertyB] = [a.fundsRaised, b.fundsRaised]; break;
-        case 'dueDate': [propertyA, propertyB] = [a.dueDate, b.dueDate]; break;
-        case 'closedDate': [propertyA, propertyB] = [<string>a.closedDate, <string>b.closedDate]; break;
+        case 'dueDate':     [propertyA, propertyB] = [a.dueDate, b.dueDate]; break;
+        case 'closedDate':  [propertyA, propertyB] = [<string>a.closedDate, <string>b.closedDate]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
@@ -119,5 +111,9 @@ export class ProjectDataSource extends DataSource<any> {
 
       return (valueA < valueB ? -1 : 1) * (this._sorter.direction === 'asc' ? 1 : -1);
     });
+  }
+
+  constructor(private _dataService: DataService, private _sorter: MatSort) {
+    super();
   }
 }

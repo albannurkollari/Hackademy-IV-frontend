@@ -13,6 +13,69 @@ $sidebarClosedVal: '0';
         float: right;
         width: calc(100% - 260px);
     }
+
+    :host ::ng-deep router-outlet + * > .container {
+        position: relative;
+        display: block;
+        background: #eee;
+        padding: 15vh 0;
+        overflow: hidden;
+      }
+      
+    :host ::ng-deep router-outlet + * > .container::before,
+    :host ::ng-deep router-outlet + * > .container::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 6%;
+        left: 0;
+        background-color: white;
+    
+        -webkit-transition: .15s all ease-in-out;
+        -moz-transition: .15s all ease-in-out;
+        -ms-transition: .15s all ease-in-out;
+        -o-transition: .15s all ease-in-out;
+        transition: .15s all ease-in-out;
+    }
+    
+    :host ::ng-deep router-outlet + * > .container::before {
+        top: 0;
+    
+        -webkit-transform: skewY(-1deg);
+        -moz-transform: skewY(-1deg);
+        -ms-transform: skewY(-1deg);
+        -o-transform: skewY(-1deg);
+        transform: skewY(-1deg);
+    }
+    
+    :host ::ng-deep router-outlet + * > .container::after {
+        bottom: -2px;
+    
+        -webkit-transform: skewY(1deg);
+        -moz-transform: skewY(1deg);
+        -ms-transform: skewY(1deg);
+        -o-transform: skewY(1deg);
+        transform: skewY(1deg);
+    }
+    
+    :host ::ng-deep router-outlet + * > .container:nth-child(odd)::before,
+    :host ::ng-deep router-outlet + * > .container:nth-child(odd)::after, {
+        transform-origin: left;
+    }
+    
+    :host ::ng-deep router-outlet + * > .container:nth-child(even)::before,
+    :host ::ng-deep router-outlet + * > .container:nth-child(even)::after, {
+        transform-origin: right;
+    }
+    
+    :host ::ng-deep router-outlet + * > .container:nth-child(even)::before {
+        transform: skewY(1deg);
+    }
+    
+    :host ::ng-deep router-outlet + * > .container:nth-child(even)::after {
+        transform: skewY(-1deg);
+    }
 }
 
 @media #{$phone-tablet} {
@@ -67,25 +130,6 @@ $sidebarClosedVal: '0';
         margin-left: #{$sidebarExpandedVal};
         pointer-events: none;
     }
-
-    /* app-sidebar.expanded {
-        width: #{$sidebarExpandedVal};
-    }
-
-    .main-panel.expanded {
-        margin-left: #{$sidebarExpandedVal};
-        pointer-events: none;
-    }
-
-    .main-panel.expanded::before {
-        content: "";
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,.5);
-        overflow: hidden;
-    } */
 }
 
 app-sidebar {
@@ -104,11 +148,39 @@ app-sidebar {
     z-index: 2;
 }
 
+.admin-header {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 6px 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid silver;
+    font-size: 30px;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: default;
+    overflow: hidden;
+    box-sizing: border-box;
+    user-select: none;
+}
+
 .main-panel {
     position: relative;
     display: block;
     padding: 20px;
     box-sizing: border-box;
+}
+
+.admin-footer {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+:host ::ng-deep .language-label {
+    text-transform: capitalize;
 }
 
 .trans-15s {

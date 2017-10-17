@@ -1,9 +1,16 @@
 import { FormControl, FormBuilder, FormGroup, Validator, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Component, OnInit, ElementRef, ViewChild, DoCheck, QueryList } from '@angular/core';
-import { Project } from '../interface/project';
+
+// Constants
 import { INPUT_ATTRIBUTES, NUMBERS, REGEX_UNITS } from './project-form.constants';
-import { Organization } from '../interface/organization';
+
+// Services
+import { LocalizationService } from '../services/localization.service';
 import { DataService } from '../services/data.service';
+
+// Interfaces
+import { Organization } from '../interface/organization';
+import { Project } from '../interface/project';
 
 @Component({
   selector: 'app-project-form',
@@ -11,8 +18,11 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./project-form.component.scss']
 })
 
-export class ProjectFormComponent implements OnInit, DoCheck {
+export class ProjectFormComponent implements OnInit {
   @ViewChild('projectForm') projectForm: ElementRef;
+
+  strings: Object = {};
+  pageHeader = 'projectNew';
   errorsTwo: QueryList<String>;
   newProject: Project = {
     id: 0,
@@ -144,12 +154,11 @@ export class ProjectFormComponent implements OnInit, DoCheck {
 
   setOrganizationId(value: any, input: HTMLInputElement): void {
     this.projectControls.orgId.setValue(value);
-    // this.projectControls.orgId.updateValueAndValidity();
   }
 
   // Not implemented fully!
   saveProject() {
-    this._fetcher.getProjects().subscribe(
+    this._dataService.getProjects().subscribe(
       res => {
         if (res !== undefined && res.length > 0) {
           const last_project = res[res.length - 1];
@@ -184,7 +193,7 @@ export class ProjectFormComponent implements OnInit, DoCheck {
   }
 
   hardReset(evt): void {
-    let form = this.fb.group(
+    const form = this.fb.group(
       this.projectControls
     );
 
@@ -198,19 +207,11 @@ export class ProjectFormComponent implements OnInit, DoCheck {
     }
   }
 
-  constructor(private _fetcher: DataService, private fb: FormBuilder) {
-    this.projectControls.toDate.setValidators([
-      Validators.required,
-      (c: AbstractControl) => c.value < new Date() ?  {'wrongdate': 'Wrong Date'} : null,
-      (c: AbstractControl): ValidationErrors | null => {
-        return this.projectControls.toDate.value < this.projectControls.fromDate.value ? {'impossibleDate': true} : null;
-      }
-    ]);
-  }
-
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
+
     if (this.organizations !== undefined) {
-      this._fetcher.getOrganizations().subscribe(
+      this._dataService.getOrganizations().subscribe(
         res => {
           if (res !== undefined && res.length > 0) {
             this.organizations = res;
@@ -262,5 +263,13 @@ export class ProjectFormComponent implements OnInit, DoCheck {
     }
   }
 
-  ngDoCheck(): void {}
+  constructor(private _localization: LocalizationService, private _dataService: DataService, private fb: FormBuilder) {
+    this.projectControls.toDate.setValidators([
+      Validators.required,
+      (c: AbstractControl) => c.value < new Date() ?  {'wrongdate': 'Wrong Date'} : null,
+      (c: AbstractControl): ValidationErrors | null => {
+        return this.projectControls.toDate.value < this.projectControls.fromDate.value ? {'impossibleDate': true} : null;
+      }
+    ]);
+  }
 }

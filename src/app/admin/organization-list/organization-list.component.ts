@@ -1,6 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataService } from '../services/data.service';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DataSource } from '@angular/cdk/table';
 import { MatPaginator, MatSort } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -9,84 +8,163 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
+
+// Services
+import { LocalizationService } from '../services/localization.service';
+import { DataService } from '../services/data.service';
+
+// Interfaces
 import { Organization } from '../interface/organization';
 
-/**
- *
- *
- * @export
- * @class OrganizationListComponent
- * @implements {OnInit}
- * @implements {OnDestroy}
- */
 @Component({
   selector: 'app-organization-list',
   templateUrl: './organization-list.component.html',
   styleUrls: ['./organization-list.component.scss']
 })
-/** */
-export class OrganizationListComponent implements OnInit, OnDestroy {
-  dataSource: OrganizationDataSource | null;
-  displayedColumns = ['id', 'name', 'address', 'person', 'phone'];
 
+export class OrganizationListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
-  // Constructor here
-  constructor(private _dataService: DataService, private _router: Router ) {
-  }
-
-  ngOnInit() {
-    this.dataSource = new OrganizationDataSource(this._dataService, this.sort);
-    console.log('this.datasource', this.dataSource);
-  }
-
-  ngOnDestroy(): void { }
+  strings: Object = {};
+  pageHeader = 'organizationList';
+  dataSource: OrganizationDataSource | null;
+  displayedColumns = []; // ['id', 'name', 'address', 'person', 'phone'];
+  columns: Object = {};
+  allColumns: Object[] = [];
 
   handleRowClick(row) {
-    // alert('your click on the row with the organization  name ' + row.name);
     this._router.navigateByUrl('/admin/organizations/view/' + row.id);
   }
 
+  setAllColumns: Function = (data: any): any[] => {
+    if (data !== undefined && data.length > 0) {
+      data = data[0];
+      const tempArray = [];
 
-}
+      for (const _col in data) {
+        if (data.hasOwnProperty(_col)) {
+          let _validate = false;
+          let newCol = {};
 
-export class OrganizationDataSource extends DataSource<any> {
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  errors: any[] = [];
-  orgList: Organization[];
+          switch (_col) {
+            case 'orgId':
+            case 'name':
+            case 'address':
+            case 'contact':
+              _validate = true;
+              break;
+            default:
+              break;
+          }
 
-  constructor(private _serviceFetch: DataService, private _sorter: MatSort) {
-    super();
-  }
+          newCol = {
+            label: _col,
+            value: this.strings[_col],
+            show: _validate
+          };
 
+          if (_col === 'contact') {
+            const contact = data[_col];
 
-  subject: BehaviorSubject<Organization[]> = new BehaviorSubject<Organization[]>([]);
+            for (const key in contact) {
+              if (contact.hasOwnProperty(key)) {
+                switch (key) {
+                  case 'email':
+                    _validate = false;
+                    break;
+                  default:
+                    _validate = true;
+                    break;
+                }
 
-  connect(): Observable<Organization[]> {
+                newCol = {
+                  label: key,
+                  value: this.strings[key],
+                  show: _validate
+                };
 
-    const displayDataChanges = [
-      this.subject,
-      this._sorter.sortChange
-    ];
+                tempArray.push(newCol);
+              }
+            }
+          } else {
+            tempArray.push(newCol);
+          }
+        }
+      }
 
-    if (!this.subject.isStopped) {
-      this._serviceFetch.getOrganizations()
-        .subscribe(res => {
-          this.subject.next(res);
-        });
-      return Observable.merge(...displayDataChanges).map(() => {
-        return this.getSortedData();
-      });
+      return tempArray;
     }
   }
 
-  disconnect() {
-    this.subject.complete();
-    this.subject.observers = [];
-    console.log('disconnected!');
+  setPageStrings: Function = (): void => {
+    this._localization.lng.subscribe(
+      strings => {
+        this.strings = strings;
+
+        if (strings !== undefined && Object.keys(strings).length > 0) {
+          this._dataService.getOrganizations().subscribe(
+            orgs => {
+              this.allColumns = this.setAllColumns(orgs);
+
+              if (this.allColumns !== undefined && Object.keys(this.allColumns).length > 0) {
+                if (this.displayedColumns.length <= 0) {
+                  for (const col of this.allColumns) {
+                    if (col['show']) {
+                      this.displayedColumns.push(col['label']);
+                    }
+                  }
+                } else {
+                  // this.ref.detectChanges();
+                }
+
+                this.dataSource = new OrganizationDataSource(this._dataService, this.sort);
+              }
+            }
+          );
+        }
+      }
+    );
   }
 
-  getSortedData(): Organization[] {
+  insertValues: Function = (label: string, row: any): string => {
+    if (label === undefined || typeof label !== 'string' || label.trim().length <= 0 || row === undefined) {
+      return;
+    }
+
+    let _value = '';
+
+    switch (label) {
+      case 'person':
+      case 'phone':
+        _value = row.contact[label];
+        break;
+      default:
+        _value = row[label];
+        break;
+    }
+
+    return _value;
+  }
+
+  ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
+
+    if (localStorage.getItem('localization') && this.setPageStrings !== undefined) {
+      this.setPageStrings();
+    }
+  }
+
+  constructor(
+    private ref: ChangeDetectorRef,
+    private _localization: LocalizationService, private _dataService: DataService, private _router: Router) { }
+}
+
+export class OrganizationDataSource extends DataSource<any> {
+  errors: any[] = [];
+  orgList: Organization[];
+  subject: BehaviorSubject<Organization[]> = new BehaviorSubject<Organization[]>([]);
+
+  getSortedData: Function = (): Organization[] => {
     const data = this.subject.value.slice();
 
     if (!this._sorter.active || this._sorter.direction === '') {
@@ -109,5 +187,31 @@ export class OrganizationDataSource extends DataSource<any> {
 
       return (valueA < valueB ? -1 : 1) * (this._sorter.direction === 'asc' ? 1 : -1);
     });
+  }
+
+  connect(): Observable<Organization[]> {
+    const displayDataChanges = [
+      this.subject,
+      this._sorter.sortChange
+    ];
+
+    if (!this.subject.isStopped) {
+      this._serviceFetch.getOrganizations()
+        .subscribe(res => {
+          this.subject.next(res);
+        });
+      return Observable.merge(...displayDataChanges).map(() => {
+        return this.getSortedData();
+      });
+    }
+  }
+
+  disconnect() {
+    this.subject.complete();
+    this.subject.observers = [];
+  }
+
+  constructor(private _serviceFetch: DataService, private _sorter: MatSort) {
+    super();
   }
 }

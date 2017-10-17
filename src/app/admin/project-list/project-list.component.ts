@@ -3,52 +3,49 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from '@angular/cdk/table';
 import { MatSort } from '@angular/material';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService } from '../services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Project } from '../interface/project';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
+
+// Services
+import { DataService } from '../services/data.service';
+
+// Interfaces
+import { Project } from '../interface/project';
+import { LocalizationService } from '../services/localization.service';
 
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.scss']
 })
+
 export class ProjectListComponent implements OnInit {
+  @ViewChild(MatSort) sort: MatSort;
+
+  strings: Object = {};
+  pageHeader = 'projectList';
   color = 'primary';
   mode = 'determinate';
-  proList: any[];
-  projectId: number = 0;
-  project: any;
   errors: any[] = [];
   dataSource: ProjectDataSource | null;
   displayedColumns = ['picture', 'projectName', 'fromDate', 'toDate', 'goal', 'funded'];
 
-  @ViewChild(MatSort) sort: MatSort;
-
-  // Constructor here
-  constructor(private _dataService: DataService, private _router: Router ) {
-  }
-
-  ngOnInit() {
-    this.dataSource = new ProjectDataSource(this._dataService, this.sort);
-    console.log('this.datasource', this.dataSource);
-  }
-
-  ngOnDestroy(): void { }
-
   handleRowClick(row) {
-    // alert('your click on the row with the Project  name ' + row.projectName);
     this._router.navigateByUrl('/admin/projects/view/' + row.id);
   }
 
+  ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
+    this.dataSource = new ProjectDataSource(this._dataService, this.sort);
+  }
 
+  constructor(private _localization: LocalizationService, private _dataService: DataService, private _router: Router ) { }
 }
 
 export class ProjectDataSource extends DataSource<any> {
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   errors: any[] = [];
   orgList: Project[];
 
@@ -69,7 +66,6 @@ export class ProjectDataSource extends DataSource<any> {
     if (!this.subject.isStopped) {
       this._serviceFetch.getProjects()
         .subscribe(res => {
-          console.log('Value', this.subject);
           this.subject.next(res);
         });
       return Observable.merge(...displayDataChanges).map(() => {
@@ -81,7 +77,6 @@ export class ProjectDataSource extends DataSource<any> {
   disconnect() {
     this.subject.complete();
     this.subject.observers = [];
-    console.log('disconnected!');
   }
 
   getSortedData(): Project[] {
@@ -96,10 +91,10 @@ export class ProjectDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sorter.active) {
-        case 'id': [propertyA, propertyB] = [a.id, b.id]; break;
-        case 'todate': [propertyA, propertyB] = [a.toDate, b.toDate]; break;
+        case 'id':          [propertyA, propertyB] = [a.id, b.id]; break;
+        case 'todate':      [propertyA, propertyB] = [a.toDate, b.toDate]; break;
         case 'projectName': [propertyA, propertyB] = [a.projectName, b.projectName]; break;
-        case 'address': [propertyA, propertyB] = [a.address, b.address]; break;
+        case 'address':     [propertyA, propertyB] = [a.address, b.address]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
@@ -108,16 +103,4 @@ export class ProjectDataSource extends DataSource<any> {
       return (valueA < valueB ? -1 : 1) * (this._sorter.direction === 'asc' ? 1 : -1);
     });
   }
-  // constructor( public router: Router, private dataService: DataService) { }
-
-  // ngOnInit() {
-  //   this.dataService.getProjects().subscribe(
-  //     res => {
-  //       //console.log(res);
-  //       this.proList = res;
-  //     },
-  //     error => this.errors.push(error)
-  //   );
-  // }
 }
-

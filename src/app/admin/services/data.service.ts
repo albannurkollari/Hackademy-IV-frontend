@@ -1,24 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, Subject } from 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/Observable/throw';
+
 
 // Interfaces
-import { Organization,NewOrganization } from '../interface/organization';
+import { Organization, NewOrganization } from '../interface/organization';
 import { Project, NewProject } from '../interface/project';
 
 @Injectable()
 export class DataService {
-  paths = {
+  private _headerSource: Subject<string> = new BehaviorSubject<string>('');
+
+  private _paths = {
     root: '../../../assets/mockdata/',
     organizations: 'organizations.json',
     newOrganizations: 'newOrganizations.json',
     projects: 'projects.json',
     newProjects: 'newProjects.json'
-    
   };
+
+  observables = {
+    header: this._headerSource.asObservable()
+  };
+
+  setObservables(obs: string, value: string) {
+    const _validate = obs === undefined || typeof obs !== 'string' || obs.length <= 0 ||
+    value === undefined || typeof value !== 'string' || value.length <= 0;
+
+    if (_validate) {
+      return;
+    }
+
+    if (this.observables !== undefined) {
+      this[obs].next(value);
+    }
+  }
 
   // Updated!
   // Doesn't break code which calls this function.
@@ -33,7 +52,7 @@ export class DataService {
     // 'options' parameter is optional so it can be skipped therefore we let user do a full data query to the database
     // or the path given.
     if (options !== undefined && Object.keys(options).length > 0) {
-      let params = new HttpParams();
+      const params = new HttpParams();
 
       for (const option in options) {
         if (options.hasOwnProperty(option)) {
@@ -76,21 +95,21 @@ export class DataService {
   // tslint:disable-next-line:member-ordering
   get = {
     organizations: (): any => {
-      return this._get(this.paths.root + this.paths.organizations);
+      return this._get(this._paths.root + this._paths.organizations);
     },
     projects: (): any => {
-      return this._get(this.paths.root + this.paths.projects);
+      return this._get(this._paths.root + this._paths.projects);
     }
   };
 
   // Get all Organizations records data from the path. Requires no arguments to input.
   // Returns a set of Organization (interface) Observable.
   getOrganizations(): Observable<Organization[]> {
-    return this._get(this.paths.root + this.paths.organizations);
+    return this._get(this._paths.root + this._paths.organizations);
   }
 
   getNewOrganizations(): Observable<NewOrganization[]> {
-    return this._get(this.paths.root + this.paths.newOrganizations);
+    return this._get(this._paths.root + this._paths.newOrganizations);
   }
 
   // Get only 1 Organization record data with parameterized query. options is an Object argument which
@@ -101,16 +120,16 @@ export class DataService {
       return;
     }
 
-    return this._get(this.paths.root + this.paths.organizations, options);
+    return this._get(this._paths.root + this._paths.organizations, options);
   }
 
   // Get all Projects records data from the path. Requires no arguments to input.
   // Returns a set of Project (interface) Observable.
   getProjects(): Observable<Project[]> {
-    return this._get(this.paths.root + this.paths.projects);
+    return this._get(this._paths.root + this._paths.projects);
   }
   getNewProjects(): Observable<NewProject[]> {
-    return this._get(this.paths.root + this.paths.newProjects);
+    return this._get(this._paths.root + this._paths.newProjects);
   }
   // Get only 1 Project record data with parameterized query. options is an Object argument which
   // should have at least 1 property + value.
@@ -120,7 +139,7 @@ export class DataService {
       return;
     }
 
-    return this._get(this.paths.root + this.paths.projects, options);
+    return this._get(this._paths.root + this._paths.projects, options);
   }
 
   getClosedProjects(list: any[], options: Object): any {
@@ -128,7 +147,7 @@ export class DataService {
       return;
     }
 
-    this._get(this.paths.root + this.paths.projects).subscribe(
+    this._get(this._paths.root + this._paths.projects).subscribe(
       res => {
         if (res !== undefined && res.length > 0) {
           list = res.filter((v, k) => {

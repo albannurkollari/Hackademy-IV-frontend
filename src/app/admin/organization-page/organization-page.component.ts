@@ -2,33 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { Organization } from '../interface/organization';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LocalizationService } from '../services/localization.service';
 
 @Component({
   selector: 'app-organization-page',
   templateUrl: './organization-page.component.html',
   styleUrls: ['./organization-page.component.scss']
 })
-export class OrganizationPageComponent implements OnInit {
 
-  _organizationId: number = 0;
-  _organization: any;
+export class OrganizationPageComponent implements OnInit {
+  private _organizationId = 0;
+  private _organization: any;
+  strings: Object = {};
+  pageHeader = 'organizationOverview';
   errors: any[] = [];
 
-  get organizationId():number{
+  get organizationId(): number {
     return this._organizationId;
   }
 
-  set organizationId(value:number){
+  set organizationId(value: number) {
     this._organizationId = value;
-    if(value > 0){
-      this.dataService.getOrganizations().subscribe(
-        res => {
-          this.organization = res.filter((v, k) => v.id == value)[0];
-        },
-        error => {
-          console.log(error);
-          this.errors.push(error);
-        }
+
+    if (value > 0) {
+      this._dataService.getOrganizations().subscribe(
+        organizations => this.organization = organizations.filter((v, k) => v.id === value)[0],
+        error => this.errors.push(error)
       );
     }
   }
@@ -39,17 +38,22 @@ export class OrganizationPageComponent implements OnInit {
 
   set organization(value: Organization){
     this._organization = value;
-    this.dataService.getProjects().subscribe(
-      res => this._organization.projects = res.filter((v,k) => v.organizationId == value.id),
+
+    this._dataService.getProjects().subscribe(
+      projects => this._organization.projects = projects.filter((v, k) => v.organizationId === value.id),
       error => this.errors.push(error)
     );
   }
 
-
-  constructor(public route: ActivatedRoute, public router: Router,private dataService: DataService) { }
-
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
     this.organizationId = +this.route.snapshot.paramMap.get('id');
   }
 
+  constructor(
+    public route: ActivatedRoute,
+    public router: Router,
+    private _dataService: DataService,
+    private _localization: LocalizationService
+  ) { }
 }

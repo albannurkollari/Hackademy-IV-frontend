@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { STRINGS } from './dashboard.constants';
+
+// Services
+import { LocalizationService } from '../services/localization.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,12 +10,13 @@ import { STRINGS } from './dashboard.constants';
 })
 
 export class DashboardComponent implements OnInit {
-  strings = STRINGS;
-  lng = 'US';
-
-  constructor() { }
+  strings: Object = {};
+  errors: any[] = [];
+  pageHeader = 'dashboard';
 
   ngOnInit() {
+    this._localization.setHeaders(this.strings, this.pageHeader);
   }
 
+  constructor(private _localization: LocalizationService) { }
 }

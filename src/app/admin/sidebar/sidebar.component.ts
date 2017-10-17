@@ -1,8 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-
-// Constants
-import { STRINGS, LINKS } from './sidebar.constants';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,20 +8,29 @@ import { STRINGS, LINKS } from './sidebar.constants';
 })
 
 export class SidebarComponent implements OnInit {
-  strings           = STRINGS;                            // Constant from another file.
-  links             = LINKS;                              // Constant from another file.
-  lng               = 'US';                               // Defines which language strings to load.
+  @Input() strings;
+  @Input() links;
+  @Input() languages;
+  @Input() localLng;
+  @Output() localLngChange: EventEmitter<string> = new EventEmitter();
+  @Input() initLocalization;
+  @ViewChild('sidebarMenu') sidebarMenu: ElementRef;
+
   mq                = matchMedia('(max-width: 1366px)');  // Defines a window.matchMedia object.
   listItemEventName = 'mouseup';                          // Defines which JavaScript event to handle.
   functions         = new Functions();                    // New instance of Functions class
   mediaChanged      = this.functions.mediaChanged;        // A function from Functions class.
   toggleSidebar     = this.functions.toggleSidebar;       // A function from Functions class.
-  @ViewChild('sidebarMenu') sidebarMenu: ElementRef;
-  currentLink       = '';
   checkLink         = this.functions.checkLink;
+  currentLink       = '';
 
-  constructor(private router: Router) {
-    this.currentLink = router.routerState.snapshot.url;
+  emitChanges: Function = (value: string): void => {
+    if (value === undefined || typeof value !== 'string' || value.trim().length <= 0) {
+      return;
+    }
+
+    this.localLngChange.emit(value);
+    this.initLocalization();
   }
 
   ngOnInit() {
@@ -37,6 +43,9 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  constructor(private router: Router) {
+    this.currentLink = router.routerState.snapshot.url;
+  }
 }
 
 // Exported all custom-tailored functions into a class named "Functions"

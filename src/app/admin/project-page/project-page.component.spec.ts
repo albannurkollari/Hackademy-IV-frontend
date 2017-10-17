@@ -7,7 +7,7 @@ import { DataService } from '../services/data.service';
 import { AgmCoreModule } from '@agm/core';
 import { DebugElement } from '@angular/core';
 import { testData } from '../test-data';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { By } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';

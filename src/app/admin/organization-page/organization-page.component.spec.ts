@@ -5,7 +5,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { DataService } from '../services/data.service';
 import { testData } from '../test-data';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
