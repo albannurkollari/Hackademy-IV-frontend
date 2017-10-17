@@ -192,7 +192,7 @@ export class ProjectFormComponent implements OnInit {
     );
   }
 
-  hardReset(evt): void {
+  hardReset(): void {
     const form = this.fb.group(
       this.projectControls
     );
