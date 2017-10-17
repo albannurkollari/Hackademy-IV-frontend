@@ -10,21 +10,30 @@
   <!-- FIELD: PROJECT NAME -->
   <mat-form-field class='project-full-width'>
     <input matInput #name name='NAME' placeholder='{{attributes.NAME.placeholder}}' [formControl]='projectControls.name'>
-    <mat-error *ngIf='projectControls.name.hasError("required")'>Name is<strong>required</strong></mat-error>
+    <mat-error *ngIf='projectControls.name.hasError("required")'>Name is
+      <strong>required</strong>
+    </mat-error>
   </mat-form-field>
 
   <!-- FIELD: PROJECT NUMBER ID -->
   <mat-form-field class='project-full-width'>
     <input matInput #projectId name='PROJECT_ID' placeholder='{{attributes.PROJECT_ID.placeholder}}' [formControl]='projectControls.projectId'>
-    <mat-error *ngIf='projectControls.projectId.hasError("required")'>Project number is<strong>required</strong></mat-error>
-    <mat-error *ngIf='projectControls.projectId.hasError("pattern")'>Project number must be written in this format<strong>XXXXXX-XXXX</strong></mat-error>
+    <mat-error *ngIf='projectControls.projectId.hasError("required")'>Project number is
+      <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf='projectControls.projectId.hasError("pattern")'>Project number must be written in this format
+      <strong>XXXXXX-XXXX</strong>
+    </mat-error>
   </mat-form-field>
 
   <!-- FIELD: PROJECT MANAGER -->
   <mat-form-field class='project-full-width'>
     <input matInput #manager name='MANAGER' placeholder='{{attributes.MANAGER.placeholder}}' [formControl]='projectControls.manager'>
-    <mat-error *ngIf='projectControls.manager.hasError("required")'>Project manager is<strong>required</strong></mat-error>
-    <mat-error *ngIf='projectControls.manager.hasError("pattern")'>Must be<strong>valid</strong> name!</mat-error>
+    <mat-error *ngIf='projectControls.manager.hasError("required")'>Project manager is
+      <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf='projectControls.manager.hasError("pattern")'>Must be
+      <strong>valid</strong> name!</mat-error>
   </mat-form-field>
 
   <!-- FIELD: PROJECT ADDRESS -->
@@ -58,7 +67,8 @@
             <strong>required</strong>
           </mat-error>
           <mat-error *ngIf='projectControls.toDate.hasError("wrongdate") || projectControls.toDate.hasError("impossibleDate")'>
-            The ending Date must not be <strong>before start </strong>
+            The ending Date must not be
+            <strong>before start </strong>
           </mat-error>
           <mat-datepicker-toggle mdSuffix [for]='myDatepicker2'></mat-datepicker-toggle>
           <mat-datepicker #myDatepicker2></mat-datepicker>
@@ -106,11 +116,14 @@
       #orgIdPicker>
       <mat-option *ngFor="let org of organizations" [value]="org.id" [textContent]='org.name'></mat-option>
     </mat-select>
-    <mat-error *ngIf='projectControls.orgId.errors'>The organization name is<strong>required</strong></mat-error>
+    <mat-error *ngIf='projectControls.orgId.errors'>The organization name is
+      <strong>required</strong>
+    </mat-error>
   </mat-form-field>
 
   <!--Button to save the form or Canceled-->
   <div class='buttons-wrapper'>
     <button mat-raised-button color='warn' (mouseup)='hardReset($event, projectForm)'>Cancel</button>
     <button mat-raised-button color='primary'>Validate</button>
+  </div>
 </form>
