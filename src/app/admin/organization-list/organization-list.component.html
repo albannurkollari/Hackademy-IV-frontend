@@ -1,33 +1,19 @@
-<br>
-<br>
-<div>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th rowspan='2'>ID</th>
-                    <th rowspan='2'>OrgID</th>
-                    <th rowspan='2'>Name</th>
-                    <th rowspan='2'>Address</th>
-                    <th colspan='3'>Contact</th> 
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Person</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let organization of orgList">
-                    <td>{{organization.id}}</td>
-                    <td>{{organization.orgId}}</td>
-                    <td><a href="/admin/organizations/view/{{organization.id}}">{{organization.name}}</a></td>
-                    <td>{{organization.address}}</td>
-                    <td>{{organization.contact.phone}}</td>
-                    <td>{{organization.contact.email}}</td>
-                    <td>{{organization.contact.person}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="container">
+  <mat-card>
+    <mat-card-content>
+      <div class="organization-container mat-elevation-z8">
+        <mat-table #table [dataSource]="dataSource" class="organization-table" matSort>
+
+          <ng-container *ngFor='let col of allColumns; let i = index;' [matColumnDef]='col?.label'>
+            <mat-header-cell *matHeaderCellDef class="organization-header-cell" [textContent]='col?.value'></mat-header-cell>
+            <mat-cell *matCellDef="let row" class="organization-cell" [textContent]='insertValues(col?.label, row)'></mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns" class="organization-header-row"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" class="organization-row" title='Double click to go to this organization detailed page.'
+            (dblclick)="handleRowClick(row)"></mat-row>
+        </mat-table>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

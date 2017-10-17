@@ -1,0 +1,49 @@
+<div class='nano-logo' title='Click to return to the admin starting page'>
+  <a [routerLink]='[links.dashboard]'></a>
+</div>
+<div class='sidebar-container'>
+  <div class='flex sidebar-label' [textContent]='strings.menu'></div>
+  <div class='sidebar-underline'></div>
+  <nav class='sidebar-menu' #sidebarMenu>
+    <ul class='item-list'>
+      <li [class.expanded]='currentLink.indexOf(links.organizationsList) > - 1' class='item hasItems' data-item='Organizations'>
+        <span class='trans-15s flex item-label' [textContent]='strings.organizations'></span>
+        <ul class='trans-25s item-list sub'>
+          <li mat-button [class.selected]='links.organizationsList === currentLink' class='item' data-item='org-list' md-ink-ripple>
+            <a class='flex' [routerLink]='[links.organizationsList]' [textContent]='strings.list'></a>
+          </li>
+          <li [class.selected]='links.organizationsNew === currentLink' class='item' data-item='org-new'>
+            <a class='flex' [routerLink]='[links.organizationsNew]' [textContent]='strings.add'></a>
+          </li>
+        </ul>
+      </li>
+      <li [class.expanded]='currentLink.indexOf(links.projectsList) > - 1' class='item hasItems' data-item='Projects'>
+        <span class='trans-15s flex item-label' [textContent]='strings.projects'></span>
+        <ul class='trans-25s item-list sub'>
+          <li [class.selected]='links.projectsList === currentLink' class='item' data-item='proj-list'>
+            <a class='flex' [routerLink]='[links.projectsList]' [textContent]='strings.list'></a>
+          </li>
+          <li [class.selected]='links.projectsNew === currentLink' class='item' data-item='proj-new'>
+            <a class='flex' [routerLink]='[links.projectsNew]' [textContent]='strings.add'></a>
+          </li>
+        </ul>
+      </li>
+      <li [class.expanded]='currentLink.indexOf(links.reports.closedProjects) > - 1' class='item hasItems' data-item='Reports'>
+        <span class='trans-15s flex item-label' [textContent]='strings.reports'></span>
+        <ul class='trans-25s item-list sub'>
+          <li [class.selected]='links.reports.closedProjects === currentLink' class='item' data-item='closed-proj-list'>
+            <a class='flex' [routerLink]='[links.reports.closedProjects]' [textContent]='strings.projects'></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  <div class='sidebar-language-wrapper'>
+    <mat-form-field class='sidebar-language'>
+      <mat-select *ngIf='strings' [placeholder]='strings.language?.toUpperCase()' [(ngModel)]="localLng" (change)='emitChanges($event.value.trim())'>
+        <mat-option class='language-label' *ngFor="let lng of languages" [value]="lng.label" [textContent]='lng.value'></mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<span class='trans-15s flex sidebar-toggle' (mouseup)='toggleSidebar($event.currentTarget)'><i></i></span>

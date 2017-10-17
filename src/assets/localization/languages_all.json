@@ -1,0 +1,34 @@
+{
+    "US": {
+        "menu": "menu",
+        "organizations": "organizations",
+        "projects": "projects",
+        "list": "list",
+        "add": "add",
+        "reports": "reports"
+    },
+    "GB": {
+        "menu": "menu",
+        "organizations": "organizations",
+        "projects": "projects",
+        "list": "list",
+        "add": "add",
+        "reports": "reports"
+    },
+    "SV": {
+        "menu": "menu",
+        "organizations": "organizations",
+        "projects": "projects",
+        "list": "list",
+        "add": "add",
+        "reports": "reports"
+    },
+    "SQ": {
+        "menu": "menu",
+        "organizations": "organizations",
+        "projects": "projects",
+        "list": "list",
+        "add": "add",
+        "reports": "reports"
+    }
+}
